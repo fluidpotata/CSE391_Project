@@ -36,7 +36,7 @@ def login():
 def signup():
     if request.method == 'GET':
         if 'username' in session:
-            if ifAdmin(session['username']):
+            if isAdmin(session['username']):
                 return redirect(url_for('admin'))
             return redirect(url_for('dashboard'))
         else:
@@ -68,6 +68,22 @@ def customer():
 def logout():
     session.pop('user', None)
     return redirect(url_for('login'))
+
+
+@app.route('/ticket', methods=['GET', 'POST'])
+def ticket():
+    if isAdmin():
+        if request.method == 'POST':
+            pass
+        else:
+            info = getTickets()
+            return render_template('ticketadmin.html', info=info)
+    else:
+        if request.method == 'GET':
+            return render_template('ticket.html', info=getTicketUser(session.get('username')))
+        
+        if request.method == 'POST':
+            pass
 
 if __name__ == '__main__':
     app.run(debug=True)
