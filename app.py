@@ -4,10 +4,6 @@ from dotenv import load_dotenv
 load_dotenv()
 from database import *
 
-
-
-load_dotenv()
-
 app = Flask(__name__)
 app.secret_key = "AstrongSEcretKey"
 
@@ -23,9 +19,12 @@ def login():
         adminStat = isAdmin(username, password)
         userStat = isAuthenticated(username, password)
         if adminStat:
+            session['user'] = username
+            session['role'] = 'admin'
             return redirect(url_for('admin'))
         elif userStat:
             session['user'] = username
+            session['role'] = 'user'
             return redirect(url_for('customer'))
         else:
             return render_template('login.html', error='Invalid username or password')
@@ -72,18 +71,29 @@ def logout():
 
 @app.route('/ticket', methods=['GET', 'POST'])
 def ticket():
-    if isAdmin():
+    if session['user']=='admin':
+        return redirect(url_for('ticketadmin'))
+    if request.method == 'GET':
+        return render_template('ticket.html', info=getTicketUser(session.get('user')))
+    
+    if request.method == 'POST':
+        category = request.form['category']
+        description = request.form['description']
+        createTicket(getUserID(session.get('user')), category, description)
+        return redirect(url_for('ticket'))
+
+@app.route('/ticketadmin', methods=['GET', 'POST'])
+def ticketadmin():
+    if session['user']=='admin':
         if request.method == 'POST':
-            pass
+            reportID = request.form['ticket_id']
+            closeTicket(reportID)
+            return redirect(url_for('ticketadmin'))
         else:
             info = getTickets()
-            return render_template('ticketadmin.html', info=info)
+            return render_template('ticketadmin.html', tickets=info)
     else:
-        if request.method == 'GET':
-            return render_template('ticket.html', info=getTicketUser(session.get('username')))
-        
-        if request.method == 'POST':
-            pass
+        return redirect(url_for('ticket'))
 
 if __name__ == '__main__':
     app.run(debug=True)

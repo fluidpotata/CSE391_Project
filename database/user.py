@@ -51,3 +51,21 @@ def clientRegister(name, address, phone, username, password):
     connection.commit()
     connection.close()
     return 
+
+def getUserID(username):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT userID FROM Users WHERE username='{username}'")
+    userID = cursor.fetchone()[0]
+    connection.close()
+    return userID
+
+
+
+def createTicket(uesrID,category,description):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"INSERT INTO Tickets(tenantID, category, Description, status) VALUES('{uesrID}', '{category}', '{description}', 'Open')")
+    connection.commit()
+    connection.close()
+    
