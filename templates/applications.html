@@ -22,17 +22,23 @@
         {%for i in data%}
         <tr>
           <th scope="row">{{i[0]}}</th>
+          <td>{{i[1]}}</td>
           <td>{{i[2]}}</td>
-          <td>{{i[3]}}</td>
-          <td>{{i[4]}}</td>
+          <td>{{i[5]}}</td>
           <td>
-              <form action="/allocate" method="POST" style="display:inline;">
+              <form action="/seeapps" method="POST" style="display:inline;">
+                <input type="hidden" name="name" value="{{csrf_token}}">
                 <select name="room_id" class="form-select form-select-sm" required>
                   {% for room in available_rooms %}
-                    <option value="{{ room[0] }}">{{ room[1] }}</option>
+                    <option value="{{ room[0] }}">{{ room[1] }} [ {{room[2]}} ]</option>
                   {% endfor %}
                 </select>
                   <input type="hidden" name="req_id" value="{{i[0]}}">
+                  <input type="hidden" name="name" value="{{i[1]}}">
+                  <input type="hidden" name="roomChoice" value="{{i[2]}}">
+                  <input type="hidden" name="username" value="{{i[3]}}">
+                  <input type="hidden" name="password" value="{{i[4]}}">
+                  <input type="hidden" name="phone" value="{{i[5]}}">
                   <button class="btn btn-sm btn-danger" type="submit">Allocate</button>
               </form>
           </td>

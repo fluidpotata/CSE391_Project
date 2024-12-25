@@ -69,3 +69,37 @@ def createTicket(uesrID,category,description):
     connection.commit()
     connection.close()
     
+
+def getTicketUser(userid):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT username FROM Users WHERE username='{userid}'")
+    result = cursor.fetchall()
+    connection.close()
+    return result
+
+
+def getTicketUserCount(userid):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT COUNT(*) FROM Tickets WHERE tenantID='{userid}'")
+    result = cursor.fetchall()
+    connection.close()
+    return result
+
+def joinReq(name, room, phone, username, password):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"INSERT INTO joinReqs(name, roomChoice, phone, username, password) VALUES('{name}', '{room}', '{phone}', '{username}', '{password}')")
+    connection.commit()
+    connection.close()
+    return
+
+
+def getJoinReqsCount():
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT COUNT(*) FROM joinReqs")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result

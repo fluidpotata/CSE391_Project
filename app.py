@@ -88,7 +88,11 @@ def seeApps():
         if request.method == 'POST':
             req_id = request.form['req_id']
             room_id = request.form['room_id']
-            allocateUser(req_id, room_id)
+            name = request.form['name']
+            phone = request.form['phone']
+            username = request.form['username']
+            password = request.form['password']
+            allocateUser(username, password, req_id, phone, room_id, name)
             return redirect(url_for('seeApps'))
         else:
             data = getJoinReqs()
