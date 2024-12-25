@@ -43,30 +43,29 @@ def signup():
     elif request.method == 'POST':
         name = request.form['name']
         username = request.form['username']
-        address = request.form['address']
         phone = request.form['phone']
         password = request.form['password']
         cpassword = request.form['confirm_password']
+        room = request.form['room_type']
         if password != cpassword:
             return render_template('signup.html', error="Password doesn't match")   
         if ifUserExists(username):
             return render_template('signup.html', error="Username taken! Try another username.")
-        clientRegister(name, address, phone, username, password)
+        joinReq(name, room, phone, username, password)
         return redirect(url_for('login'))
 
 
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    flash = session.get('flash')
+    session['flash'] = None
+    return render_template('admin.html', data={'tickets':getTickets(), 'count':getCountTickets(), 'flash': flash, 'joinreqs':getJoinReqsCount()})
+
 
 @app.route('/customer')
 def customer():
-    return render_template('customer.html')
-
-@app.route('/logout')
-def logout():
-    session.pop('user', None)
-    return redirect(url_for('login'))
+    data = {'bill':'unpaid'}
+    return render_template('customer.html', data=data)
 
 
 @app.route('/ticket', methods=['GET', 'POST'])
@@ -82,6 +81,23 @@ def ticket():
         createTicket(getUserID(session.get('user')), category, description)
         return redirect(url_for('ticket'))
 
+
+@app.route('/seeapps', methods=['GET', 'POST'])
+def seeApps():
+    if session['user']=='admin':
+        if request.method == 'POST':
+            req_id = request.form['req_id']
+            room_id = request.form['room_id']
+            allocateUser(req_id, room_id)
+            return redirect(url_for('seeApps'))
+        else:
+            data = getJoinReqs()
+            available_rooms = getAvailableRooms()
+            return render_template('applications.html', data=data, available_rooms=available_rooms)
+    else:
+        return redirect(url_for('customer'))
+
+
 @app.route('/ticketadmin', methods=['GET', 'POST'])
 def ticketadmin():
     if session['user']=='admin':
@@ -94,6 +110,23 @@ def ticketadmin():
             return render_template('ticketadmin.html', tickets=info)
     else:
         return redirect(url_for('ticket'))
+
+
+
+@app.route('/allocate', methods=['GET', 'POST'])
+def allocate():
+    if request.method == 'POST':
+        pass
+    else:
+        pass
+
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

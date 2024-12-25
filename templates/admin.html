@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 
@@ -32,53 +33,65 @@
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 bg-body-tertiary">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
           <h1 class="h4">Dashboard</h1>
-        </div>
+=======
+{% extends "adminbase.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+  <div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+      <h1 class="h4">Dashboard</h1>
+    </div>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-            <div class="card p-3">
-              <h5 class="card-title">Create a Ticket</h5>
-              <a href="/ticket">
-                <button>See tickets</button>
-              </a>
-            </div>
-          </div>
-          <!-- <div class="col">
-            <div class="card p-3">
-              <h5 class="card-title">Card Title 2</h5>
-              <p class="card-text">Some description text here.</p>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card p-3">
-              <h5 class="card-title">Card Title 3</h5>
-              <p class="card-text">Some description text here.</p>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card p-3">
-              <h5 class="card-title">Card Title 4</h5>
-              <p class="card-text">Some description text here.</p>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card p-3">
-              <h5 class="card-title">Card Title 5</h5>
-              <p class="card-text">Some description text here.</p>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card p-3">
-              <h5 class="card-title">Card Title 6</h5>
-              <p class="card-text">Some description text here.</p>
-            </div>
-          </div> -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="card-title pt-3 pb-3">Check Tickets</h5>
+          <a href="/ticket">
+            <button class="btn btn-primary">See tickets</button>
+          </a>
+>>>>>>> d3b4bd5 (Added base templates)
         </div>
-      </main>
+      </div>
+      <!-- <div class="col">
+        <div class="card p-3">
+          <h5 class="card-title">Card Title 2</h5>
+          <p class="card-text">Some description text here.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="card-title">Card Title 3</h5>
+          <p class="card-text">Some description text here.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="card-title">Card Title 4</h5>
+          <p class="card-text">Some description text here.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="card-title">Card Title 5</h5>
+          <p class="card-text">Some description text here.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="card-title">Card Title 6</h5>
+          <p class="card-text">Some description text here.</p>
+        </div>
+      </div> -->
     </div>
   </div>
+<<<<<<< HEAD
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+=======
+</main>
+{% endblock %}
+>>>>>>> d3b4bd5 (Added base templates)
