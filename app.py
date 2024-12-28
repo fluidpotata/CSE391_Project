@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import os
 from dotenv import load_dotenv
 load_dotenv()
+
 from database import *
 
 app = Flask(__name__)
