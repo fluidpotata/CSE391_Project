@@ -5,7 +5,7 @@ load_dotenv()
 
 
 def dbConnect():
-    return sqlite3.connect(os.getenv('DATABASE'))   
+    return sqlite3.connect('database/main.db')
 
 
 def isAdmin(username, password):
@@ -15,7 +15,7 @@ def isAdmin(username, password):
     result = cursor.fetchall()
     connection.close()
     if len(result)>0:
-        return True
+        return result[0][0]
     return False
 
 
@@ -26,7 +26,7 @@ def isAuthenticated(username, password):
     result = cursor.fetchall()
     connection.close()
     if len(result)>0:
-        return True
+        return result[0][0]
     return False
 
 
@@ -100,6 +100,26 @@ def getJoinReqsCount():
     connection = dbConnect()
     cursor = connection.cursor()
     cursor.execute(f"SELECT COUNT(*) FROM joinReqs")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result
+
+
+def getTicketCount(tenantID):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT COUNT(*) FROM Tickets WHERE tenantID='{tenantID}' and status='Open'")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result
+
+
+def getPackage(tenantID):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT roomID FROM Tenants WHERE userID='{tenantID}'")
+    roomID = cursor.fetchall()[0][0]
+    cursor.execute(f"SELECT type FROM Rooms WHERE roomID='{roomID}'")
     result = cursor.fetchall()[0][0]
     connection.close()
     return result

@@ -3,7 +3,8 @@ import os
 
 
 def dbConnect():
-    return sqlite3.connect(os.getenv('DATABASE'))   
+    # return sqlite3.connect(os.getenv('DATABASE'))
+    return sqlite3.connect('database/main.db')   
 
 
 def getTickets():

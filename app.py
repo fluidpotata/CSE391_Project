@@ -22,10 +22,12 @@ def login():
         if adminStat:
             session['user'] = username
             session['role'] = 'admin'
+            session['id'] = adminStat
             return redirect(url_for('admin'))
         elif userStat:
             session['user'] = username
             session['role'] = 'user'
+            session['id'] = userStat
             return redirect(url_for('customer'))
         else:
             return render_template('login.html', error='Invalid username or password')
@@ -65,7 +67,7 @@ def admin():
 
 @app.route('/customer')
 def customer():
-    data = {'bill':'unpaid'}
+    data = {'username': session['user'],'package':getPackage(session['id']),'bill':'unpaid','internetbill':'paid', 'utilitybill':'unpaid', 'ticketCount':getTicketCount(session.get('id'))}
     return render_template('customer.html', data=data)
 
 
