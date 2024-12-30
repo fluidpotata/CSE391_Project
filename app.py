@@ -137,9 +137,13 @@ def allocate():
 @app.route('/paybill', methods=['GET', 'POST'])
 def paybill():
     if request.method == 'POST':
-        pass
+        tenantid = request.form['tenantid']
+        bill = request.form['bill']
+        tid = request.form['tID']
+        payBill(tenantid, bill, tid)
+        return redirect(url_for('paybill'))
     else:
-        return render_template('billpay.html')
+        return render_template('billpay.html', data=getBills(session.get('id')))
 
 
 

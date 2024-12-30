@@ -134,3 +134,12 @@ def getBills(userID):
     result = cursor.fetchall()
     connection.close()
     return result
+
+
+def payBill(tenantid, pid, tid):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"UPDATE Payments SET status='paid', transactionID='{tid}' WHERE tenantID='{tenantid}' AND paymentID='{pid}'")
+    connection.commit()
+    connection.close()
+    return

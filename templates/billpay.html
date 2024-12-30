@@ -8,16 +8,17 @@
         <h2>Pay Bill</h2>
         <form action="/paybill" method="POST">
             <div class="mb-3">
-            <label for="username" class="form-label">Tenant ID</label>
-            <input type="text" class="form-control" id="username" name="username" value="{{data[0][2]}}" disabled>
+            <label for="tenantid" class="form-label">Tenant ID</label>
+            <input type="text" class="form-control" id="tenantid" name="tenantid" value="{{data[0][1]}}" disabled>
+            <input type="hidden" name="tenantid" value="{{data[0][1]}}">
             </div>
 
-            <div class="mb-3">
-            <label for="month" class="form-label">Month</label>
-            <select class="form-select" id="type">
-                <option selected>Select Month</option>
+            <div class="mb-3 text-light">
+            <label for="month" class="form-label">Bill</label>
+            <select class="form-select" id="type" name="bill">
+                <option selected>Select Bill</option>
                 {% for d in data %}
-                <option value="{{d[7]}}">{{month}}</option>
+                <option value="{{d[0]}}">{{d[7]}} - {{d[5]}} : {{d[6]}} tk</option>
                 {% endfor %}
             </select>
             </div>
@@ -28,9 +29,6 @@
             </div>
     
 
-
-
-            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary mb-3">Pay Now</button>
         </form>
         </div>
