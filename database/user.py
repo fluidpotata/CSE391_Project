@@ -2,6 +2,7 @@ import sqlite3
 import os
 from dotenv import load_dotenv
 load_dotenv()
+from time import strftime
 
 
 def dbConnect():
@@ -143,3 +144,36 @@ def payBill(tenantid, pid, tid):
     connection.commit()
     connection.close()
     return
+
+
+def getBillStatus(userID):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{userID}'")
+    tenantID = cursor.fetchone()[0]
+    cursor.execute(f"SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND month='{strftime('%Y-%m')}' AND type='rent' AND tenantID='{tenantID}'")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result==0
+
+
+def getInternetBillStatus(userID):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{userID}'")
+    tenantID = cursor.fetchone()[0]
+    cursor.execute(f"SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND month='{strftime('%Y-%m')}' AND type='internet' AND tenantID='{tenantID}'")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result==0
+
+
+def getUtilityBillStatus(userID):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{userID}'")
+    tenantID = cursor.fetchone()[0]
+    cursor.execute(f"SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND month='{strftime('%Y-%m')}' AND type='utility' AND tenantID='{tenantID}'")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result==0

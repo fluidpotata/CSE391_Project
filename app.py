@@ -67,7 +67,8 @@ def admin():
 
 @app.route('/customer')
 def customer():
-    data = {'username': session['user'],'package':getPackage(session['id']),'bill':'unpaid','internetbill':'paid', 'utilitybill':'unpaid', 'ticketCount':getTicketCount(session.get('id'))}
+    userID = session['id']
+    data = {'username': session['user'],'package':getPackage(userID),'bill': getBillStatus(userID),'internetbill':getInternetBillStatus(userID), 'utilitybill': getUtilityBillStatus(userID), 'ticketCount':getTicketCount(userID)}
     return render_template('customer.html', data=data)
 
 
@@ -124,14 +125,6 @@ def ticketadmin():
 def generatebill():
     generateBill()
     return redirect(url_for('admin'))
-
-
-@app.route('/allocate', methods=['GET', 'POST'])
-def allocate():
-    if request.method == 'POST':
-        pass
-    else:
-        pass
 
 
 @app.route('/paybill', methods=['GET', 'POST'])

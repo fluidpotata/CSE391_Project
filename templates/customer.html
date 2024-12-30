@@ -37,10 +37,14 @@
     <div class="col">
       <div class="card p-3">
         <h5 class="card-title">Monthly Rent</h5>
-        {% if data['bill']=='paid' %}
+        {% if data['bill'] %}
         <p class="card-textr text-success">Paid.</p>
+        <div>
+          <button class="btn btn-danger btn-sm aria-disabled" type="button" href="/paybill" style="width: auto;"
+            disabled>Pay Now</button>
+        </div>
         {% endif %}
-        {% if data['bill']=='unpaid' %}
+        {% if not data['bill'] %}
         <p class="card-text text-danger">Not Paid!</p>
         <div>
           <a class="btn btn-danger btn-sm" type="button" href="/paybill" style="width: auto;">Pay Now</a>
@@ -52,14 +56,14 @@
     <div class="col">
       <div class="card p-3">
         <h5 class="card-title">Internet Bill</h5>
-        {% if data['internetbill']=='paid' %}
+        {% if data['internetbill'] %}
         <p class="card-textr text-success">Paid.</p>
         <div>
           <button class="btn btn-danger btn-sm aria-disabled" type="button" href="/paybill" style="width: auto;"
             disabled>Pay Now</button>
         </div>
         {% endif %}
-        {% if data['internetbill']=='unpaid' %}
+        {% if not data['internetbill'] %}
         <p class="card-text text-danger">Not Paid!</p>
         <div>
           <a class="btn btn-danger btn-sm" type="button" href="/paybill" style="width: auto;">Pay Now</a>
@@ -72,14 +76,14 @@
     <div class="col">
       <div class="card p-3">
         <h5 class="card-title">Other Utilites</h5>
-        {% if data['utilitybill']=='paid' %}
+        {% if data['utilitybill'] %}
         <p class="card-textr text-success">Paid.</p>
         <div>
           <button class="btn btn-danger btn-sm aria-disabled" type="button" href="/paybill" style="width: auto;"
             disabled>Pay Now</button>
         </div>
         {% endif %}
-        {% if data['utilitybill']=='unpaid' %}
+        {% if not data['utilitybill'] %}
         <p class="card-text text-danger">Not Paid!</p>
         <div>
           <a class="btn btn-danger btn-sm" type="button" href="/paybill" style="width: auto;">Pay Now</a>
