@@ -66,6 +66,8 @@ def getUserID(username):
 def createTicket(uesrID,category,description):
     connection = dbConnect()
     cursor = connection.cursor()
+    cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{uesrID}'")
+    uesrID = cursor.fetchone()[0]
     cursor.execute(f"INSERT INTO Tickets(tenantID, category, Description, status) VALUES('{uesrID}', '{category}', '{description}', 'Open')")
     connection.commit()
     connection.close()
