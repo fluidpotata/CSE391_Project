@@ -41,7 +41,14 @@ def allocateUser(username, password, req_id, phone, room_id, name):
     userID = cursor.fetchone()[0]
     cursor.execute(f"INSERT INTO Tenants(name, phone, roomID, userID) VALUES('{name}', '{phone}', '{room_id}', '{userID}')")
     cursor.execute(f"DELETE FROM joinReqs WHERE requestID='{req_id}'")
+    cursor.execute(f"SELECT type FROM Rooms WHERE roomID='{room_id}'")
+    room_type = cursor.fetchone()[0]
+    cursor.execute(f"SELECT what, amount FROM defaultBills WHERE type='{room_type}'")
+    default_bills = cursor.fetchall()
+    for bill in default_bills:
+        cursor.execute(f"INSERT INTO Bills(userID, type, amount) VALUES('{userID}', '{bill[0]}', '{bill[1]}')")
     connection.commit()
+    generateBill()
     connection.close()
 
 
