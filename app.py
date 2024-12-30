@@ -140,7 +140,21 @@ def paybill():
 
 
 
+@app.route('/rooms')
+def rooms():
+    return render_template('addroom.html')
 
+
+@app.route('/tenants', methods=['GET', 'POST'])
+def tenants():
+    if request.method == 'POST':
+        tenantid = request.form['tenantid']
+        option = request.form['option']
+        val = float(request.form['val'])
+        updateTenant(tenantid,option, val)
+        return redirect(url_for('tenants'))
+    elif request.method == 'GET':
+        return render_template('tenants.html', tenants=getAllTenants())
 
 
 @app.route('/logout')

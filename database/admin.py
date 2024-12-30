@@ -11,7 +11,7 @@ def dbConnect():
 def getTickets():
     connection = dbConnect()
     cursor = connection.cursor()
-    cursor.execute(f"SELECT * FROM Tickets  ORDER BY status DESC")
+    cursor.execute(f"SELECT Tickets.*, Tenants.name FROM Tickets JOIN Tenants ON Tickets.tenantID = Tenants.tenantID ORDER BY status DESC")
     result = cursor.fetchall()
     connection.close()
     return result
@@ -81,3 +81,22 @@ def generateBill():
     
     connection.commit()
     connection.close()
+
+
+def getAllTenants():
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM Tenants")
+    result = cursor.fetchall()
+    connection.close()
+    return result
+
+
+def updateTenant(tebantid, option, value):
+    connecton = dbConnect()
+    cursor = connecton.cursor()
+    cursor.execute(f"SELECT userID FROM Tenants WHERE tenantID='{tebantid}'")
+    user_id = cursor.fetchone()[0]
+    cursor.execute(f"UPDATE Bills SET amount='{value}' WHERE userID='{user_id}' AND type='{option}'")
+    connecton.commit()
+    connecton.close()
