@@ -107,3 +107,11 @@ def updateTenant(tebantid, option, value):
     cursor.execute(f"UPDATE Bills SET amount='{value}' WHERE userID='{user_id}' AND type='{option}'")
     connecton.commit()
     connecton.close()
+
+
+def addRoom(roomtype, roomname):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"INSERT INTO Rooms(type, roomName, status) VALUES('{roomtype}', '{roomname}', 'Available')")
+    connection.commit()
+    connection.close()

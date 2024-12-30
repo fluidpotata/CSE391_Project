@@ -140,9 +140,15 @@ def paybill():
 
 
 
-@app.route('/rooms')
+@app.route('/rooms', methods=['GET', 'POST'])
 def rooms():
-    return render_template('addroom.html')
+    if request.method == 'GET':
+        return render_template('addroom.html')
+    elif request.method == 'POST':
+        roomName = request.form['roomName']
+        roomtype = request.form['roomType']
+        addRoom(roomtype, roomName)
+        return redirect(url_for('rooms'))
 
 
 @app.route('/tenants', methods=['GET', 'POST'])
