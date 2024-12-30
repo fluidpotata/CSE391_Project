@@ -120,12 +120,26 @@ def ticketadmin():
 
 
 
+@app.route('/generatebill')
+def generatebill():
+    generateBill()
+    return redirect(url_for('admin'))
+
+
 @app.route('/allocate', methods=['GET', 'POST'])
 def allocate():
     if request.method == 'POST':
         pass
     else:
         pass
+
+
+@app.route('/paybill', methods=['GET', 'POST'])
+def paybill():
+    if request.method == 'POST':
+        pass
+    else:
+        return render_template('billpay.html')
 
 
 

@@ -123,3 +123,14 @@ def getPackage(tenantID):
     result = cursor.fetchall()[0][0]
     connection.close()
     return result
+
+
+def getBills(userID):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{userID}'")
+    tenantID = cursor.fetchone()[0]
+    cursor.execute(f"SELECT * FROM Payments WHERE tenantID='{tenantID}' AND status='unpaid'")
+    result = cursor.fetchall()
+    connection.close()
+    return result

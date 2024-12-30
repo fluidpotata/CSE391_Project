@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from time import strftime
 
 
 def dbConnect():
@@ -60,3 +61,23 @@ def getAvailableRooms():
     result = cursor.fetchall()
     connection.close()
     return result
+
+
+def generateBill():
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute("SELECT userID, tenantID FROM Tenants")
+    tenant_ids = cursor.fetchall()
+    
+    for tenant_id in tenant_ids:
+        cursor.execute(f"SELECT * FROM Bills WHERE userID='{tenant_id[0]}'")
+        bills = cursor.fetchall()
+        
+        for bill in bills:
+            cursor.execute(f"SELECT * FROM Payments WHERE tenantID='{tenant_id[1]}' AND month='{strftime('%Y-%m')}' AND payment='{bill[0]}'")
+            existing_payment = cursor.fetchone()
+            if not existing_payment:
+                cursor.execute(f"INSERT INTO Payments(payment, tenantID, amount, month, status, transactionID, type) VALUES('{bill[0]}', '{tenant_id[1]}', '{bill[3]}', '{strftime('%Y-%m')}', 'unpaid', 'unpaid', '{bill[2]}')")
+    
+    connection.commit()
+    connection.close()
