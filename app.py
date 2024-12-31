@@ -88,7 +88,7 @@ def ticket():
 
 @app.route('/seeapps', methods=['GET', 'POST'])
 def seeApps():
-    if session['user']=='admin':
+    if session['role']=='admin':
         if request.method == 'POST':
             req_id = request.form['req_id']
             room_id = request.form['room_id']
