@@ -40,6 +40,7 @@ def allocateUser(username, password, req_id, phone, room_id, name):
     cursor.execute(f"SELECT userID FROM Users WHERE username='{username}'")
     userID = cursor.fetchone()[0]
     cursor.execute(f"INSERT INTO Tenants(name, phone, roomID, userID) VALUES('{name}', '{phone}', '{room_id}', '{userID}')")
+    cursor.execute(f"UPDATE Rooms SET status='Occupied' WHERE roomID='{room_id}'")
     cursor.execute(f"DELETE FROM joinReqs WHERE requestID='{req_id}'")
     cursor.execute(f"SELECT type FROM Rooms WHERE roomID='{room_id}'")
     room_type = cursor.fetchone()[0]
