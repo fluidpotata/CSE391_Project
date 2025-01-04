@@ -28,14 +28,15 @@
             {% if bill[3] == 'unpaid' %}
             <span class="badge bg-danger">Unpaid</span>
             {% elif bill[3] == 'unverified' %}
-            <span class="badge bg-warning">unverified</span>
+            <span class="badge bg-warning">Unverified</span>
             {% endif %}
           </td>
           <td>
+            {% if bill[3] == 'unverified' %}
             <div class="d-flex gap-2">
-              <a href="/bills/{{ bill.id }}/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-              <a href="/bills/{{ bill.id }}/delete" class="btn btn-sm btn-outline-danger">Delete</a>
+              <a href="/unverifiedbills" class="btn btn-sm btn-outline-primary">Go to verifications!</a>
             </div>
+            {% endif %}
           </td>
         </tr>
         {% else %}
