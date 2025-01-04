@@ -173,3 +173,12 @@ def getUnverifiedBills():
 def verifyBill(paymentID):
     pushToDB(f"UPDATE Payments SET status='paid' WHERE paymentID='{paymentID}'")
     return
+
+def getUnverifiedBills():
+    result = pullFromDB("SELECT * FROM Payments WHERE status='unverified'")
+    return result
+
+
+def getFreeRooms():
+    result = pullFromDB("SELECT * FROM Rooms WHERE status='Available'")
+    return result

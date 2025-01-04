@@ -195,14 +195,17 @@ def getTenantName(tenantID):
     
 
 def updatePackage(tenantID, roomID):
-    pushToDB(f"UPDATE Tenants SET roomID='{roomID}' WHERE userID='{tenantID}'")
+    curroom = pullFromDB(f"SELECT roomID FROM Tenants WHERE tenantID='{tenantID}'")[0][0]
+    pushToDB(f"UPDATE Rooms SET status='Available' WHERE roomID='{curroom}'")
+    pushToDB(f"UPDATE Tenants SET roomID='{roomID}' WHERE tenantID='{tenantID}'")
     roomtype = pullFromDB(f"SELECT type FROM Rooms WHERE roomID='{roomID}'")[0][0]
-    rentbill = pullFromDB(f"SELECT amount FROM Bills WHERE type='rent' AND roomType='{roomtype}'")[0][0]
-    internetbill = pullFromDB(f"SELECT amount FROM Bills WHERE type='internet' AND roomType='{roomtype}'")[0][0]
-    utilitybill = pullFromDB(f"SELECT amount FROM Bills WHERE type='utility' AND roomType='{roomtype}'")[0][0]
+    rentbill = pullFromDB(f"SELECT amount FROM defaultBills WHERE what='rent' AND type='{roomtype}'")[0][0]
+    internetbill = pullFromDB(f"SELECT amount FROM defaultBills WHERE what='internet' AND type='{roomtype}'")[0][0]
+    utilitybill = pullFromDB(f"SELECT amount FROM defaultBills WHERE what='utility' AND type='{roomtype}'")[0][0]
     userID = pullFromDB(f"SELECT userID FROM Tenants WHERE tenantID='{tenantID}'")[0][0]
     pushToDB(f"UPDATE Bills SET amount='{rentbill}' WHERE userID='{userID}' AND type='rent'")
     pushToDB(f"UPDATE Bills SET amount='{internetbill}' WHERE userID='{userID}' AND type='internet'")
     pushToDB(f"UPDATE Bills SET amount='{utilitybill}' WHERE userID='{userID}' AND type='utility'")
+    pushToDB(f"UPDATE Rooms SET status='Occupied' WHERE roomID='{roomID}'")
 
     return

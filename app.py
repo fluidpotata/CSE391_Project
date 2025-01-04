@@ -179,6 +179,17 @@ def unverifiedbills():
         return render_template('verifybills.html', bills=getUnverifiedBills(), getTenantName=getTenantName)
 
 
+@app.route('/updateroom', methods=['GET', 'POST'])
+def updateroom():
+    if request.method == 'POST':
+        tenantid = request.form['tenantid']
+        roomid = request.form['roomid']
+        updatePackage(tenantid, roomid)
+        return redirect(url_for('updateroom'))
+    else:
+        return render_template('updateroom.html', tenants=getAllTenants(), rooms=getAvailableRooms())
+
+
 @app.route('/logout')
 def logout():
     session.clear()
