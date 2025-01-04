@@ -153,10 +153,13 @@ def getBillStatus(userID):
     cursor = connection.cursor()
     cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{userID}'")
     tenantID = cursor.fetchone()[0]
-    cursor.execute(f"SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND month='{strftime('%Y-%m')}' AND type='rent' AND tenantID='{tenantID}'")
-    result = cursor.fetchall()[0][0]
+    cursor.execute(f"SELECT status FROM Payments WHERE (status='unpaid' OR status='unverified') AND month='{strftime('%Y-%m')}' AND type='rent' AND tenantID='{tenantID}'")
+    result = cursor.fetchall()
     connection.close()
-    return result==0
+    if len(result)==0:
+        return False
+    else:
+        return result[0][0]
 
 
 def getInternetBillStatus(userID):
@@ -164,10 +167,13 @@ def getInternetBillStatus(userID):
     cursor = connection.cursor()
     cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{userID}'")
     tenantID = cursor.fetchone()[0]
-    cursor.execute(f"SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND month='{strftime('%Y-%m')}' AND type='internet' AND tenantID='{tenantID}'")
-    result = cursor.fetchall()[0][0]
+    cursor.execute(f"SELECT status FROM Payments WHERE (status='unpaid' OR status='unverified') AND month='{strftime('%Y-%m')}' AND type='internet' AND tenantID='{tenantID}'")
+    result = cursor.fetchall()
     connection.close()
-    return result==0
+    if len(result)==0:
+        return False
+    else:
+        return result[0][0]
 
 
 def getUtilityBillStatus(userID):
@@ -175,13 +181,28 @@ def getUtilityBillStatus(userID):
     cursor = connection.cursor()
     cursor.execute(f"SELECT tenantID FROM Tenants WHERE userID='{userID}'")
     tenantID = cursor.fetchone()[0]
-    cursor.execute(f"SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND month='{strftime('%Y-%m')}' AND type='utility' AND tenantID='{tenantID}'")
-    result = cursor.fetchall()[0][0]
+    cursor.execute(f"SELECT status FROM Payments WHERE (status='unpaid' OR status='unverified') AND month='{strftime('%Y-%m')}' AND type='utility' AND tenantID='{tenantID}'")
+    result = cursor.fetchall()
     connection.close()
-    return result==0
-
+    if len(result)==0:
+        return False
+    else:
+        return result[0][0]
 
 def getTenantName(tenantID):
     result = pullFromDB(f"SELECT name FROM Tenants WHERE tenantID='{tenantID}'")[0][0]
     return result
     
+
+def updatePackage(tenantID, roomID):
+    pushToDB(f"UPDATE Tenants SET roomID='{roomID}' WHERE userID='{tenantID}'")
+    roomtype = pullFromDB(f"SELECT type FROM Rooms WHERE roomID='{roomID}'")[0][0]
+    rentbill = pullFromDB(f"SELECT amount FROM Bills WHERE type='rent' AND roomType='{roomtype}'")[0][0]
+    internetbill = pullFromDB(f"SELECT amount FROM Bills WHERE type='internet' AND roomType='{roomtype}'")[0][0]
+    utilitybill = pullFromDB(f"SELECT amount FROM Bills WHERE type='utility' AND roomType='{roomtype}'")[0][0]
+    userID = pullFromDB(f"SELECT userID FROM Tenants WHERE tenantID='{tenantID}'")[0][0]
+    pushToDB(f"UPDATE Bills SET amount='{rentbill}' WHERE userID='{userID}' AND type='rent'")
+    pushToDB(f"UPDATE Bills SET amount='{internetbill}' WHERE userID='{userID}' AND type='internet'")
+    pushToDB(f"UPDATE Bills SET amount='{utilitybill}' WHERE userID='{userID}' AND type='utility'")
+
+    return

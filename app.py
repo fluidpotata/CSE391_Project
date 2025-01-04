@@ -169,6 +169,16 @@ def seebills(billtype):
     return render_template('seeUnpaidBills.html', bills=data, getTenantName=getTenantName)
 
 
+@app.route('/unverifiedbills', methods=['GET', 'POST'])
+def unverifiedbills():
+    if request.method == 'POST':
+        paymentid = request.form['paymentid']
+        verifyBill(paymentid)
+        return redirect(url_for('unverifiedbills'))
+    else:
+        return render_template('verifybills.html', bills=getUnverifiedBills(), getTenantName=getTenantName)
+
+
 @app.route('/logout')
 def logout():
     session.clear()

@@ -37,15 +37,15 @@
     <div class="col">
       <div class="card p-3">
         <h5 class="card-title">Monthly Rent</h5>
-        {% if data['bill'] %}
+        {% if not data['bill'] %}
         <p class="card-textr text-success">Paid.</p>
         <div>
           <button class="btn btn-danger btn-sm aria-disabled" type="button" href="/paybill" style="width: auto;"
             disabled>Pay Now</button>
         </div>
         {% endif %}
-        {% if not data['bill'] %}
-        <p class="card-text text-danger">Not Paid!</p>
+        {% if data['bill'] %}
+        <p class="card-text text-danger">{{data['bill']}}</p>
         <div>
           <a class="btn btn-danger btn-sm" type="button" href="/paybill" style="width: auto;">Pay Now</a>
         </div>
@@ -56,15 +56,15 @@
     <div class="col">
       <div class="card p-3">
         <h5 class="card-title">Internet Bill</h5>
-        {% if data['internetbill'] %}
+        {% if not data['internetbill'] %}
         <p class="card-textr text-success">Paid.</p>
         <div>
           <button class="btn btn-danger btn-sm aria-disabled" type="button" href="/paybill" style="width: auto;"
             disabled>Pay Now</button>
         </div>
         {% endif %}
-        {% if not data['internetbill'] %}
-        <p class="card-text text-danger">Not Paid!</p>
+        {% if data['internetbill'] %}
+        <p class="card-text text-danger">{{data['internetbill']}}</p>
         <div>
           <a class="btn btn-danger btn-sm" type="button" href="/paybill" style="width: auto;">Pay Now</a>
         </div>
@@ -76,15 +76,15 @@
     <div class="col">
       <div class="card p-3">
         <h5 class="card-title">Other Utilites</h5>
-        {% if data['utilitybill'] %}
+        {% if not data['utilitybill'] %}
         <p class="card-textr text-success">Paid.</p>
         <div>
           <button class="btn btn-danger btn-sm aria-disabled" type="button" href="/paybill" style="width: auto;"
             disabled>Pay Now</button>
         </div>
         {% endif %}
-        {% if not data['utilitybill'] %}
-        <p class="card-text text-danger">Not Paid!</p>
+        {% if data['utilitybill'] %}
+        <p class="card-text text-danger">{{data['utilitybill']}}</p>
         <div>
           <a class="btn btn-danger btn-sm" type="button" href="/paybill" style="width: auto;">Pay Now</a>
         </div>
