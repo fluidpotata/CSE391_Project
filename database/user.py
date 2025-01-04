@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from time import strftime
-
+from admin import pullFromDB, pushToDB
 
 def dbConnect():
     return sqlite3.connect('database/main.db')

@@ -7,6 +7,22 @@ def dbConnect():
     # return sqlite3.connect(os.getenv('DATABASE'))
     return sqlite3.connect('database/main.db')   
 
+def pushToDB(query):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(query)
+    connection.commit()
+    connection.close()
+
+
+def pullFromDB(query):
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute(query)
+    result = cursor.fetchall()
+    connection.close()
+    return result
+
 
 def getTickets():
     connection = dbConnect()
@@ -115,4 +131,30 @@ def addRoom(roomtype, roomname):
     cursor = connection.cursor()
     cursor.execute(f"INSERT INTO Rooms(type, roomName, status) VALUES('{roomtype}', '{roomname}', 'Available')")
     connection.commit()
+    connection.close()
+
+
+def getRentCount():
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND type='rent'")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result
+
+
+def getInternetCount():
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND type='internet'")
+    result = cursor.fetchall()[0][0]
+    connection.close()
+    return result
+
+
+def getUtilityCount():
+    connection = dbConnect()
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND type='utility'")
+    result = cursor.fetchall()[0][0]
     connection.close()

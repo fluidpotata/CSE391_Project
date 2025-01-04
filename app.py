@@ -62,7 +62,7 @@ def signup():
 def admin():
     flash = session.get('flash')
     session['flash'] = None
-    return render_template('admin.html', data={'tickets':getTickets(), 'count':getCountTickets(), 'flash': flash, 'joinreqs':getJoinReqsCount()})
+    return render_template('admin.html', data={'tickets':getTickets(), 'count':getCountTickets(), 'flash': flash, 'joinreqs':getJoinReqsCount(), 'rent':getRentCount(), 'internet':getInternetCount(), 'utility':getUtilityCount()})
 
 
 @app.route('/customer')
