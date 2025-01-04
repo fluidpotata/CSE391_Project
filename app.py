@@ -163,6 +163,12 @@ def tenants():
         return render_template('tenants.html', tenants=getAllTenants())
 
 
+@app.route('/seebills/<string:billtype>')
+def seebills(billtype):
+    data = getUnpaidBills(billtype)
+    return render_template('seeUnpaidBills.html', bills=data, getTenantName=getTenantName)
+
+
 @app.route('/logout')
 def logout():
     session.clear()

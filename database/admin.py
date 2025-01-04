@@ -158,3 +158,18 @@ def getUtilityCount():
     cursor.execute("SELECT COUNT(*) FROM Payments WHERE status='unpaid' AND type='utility'")
     result = cursor.fetchall()[0][0]
     connection.close()
+    return result
+
+
+def getUnpaidBills(type):
+    result = pullFromDB(f"SELECT * FROM Payments WHERE (status='unpaid' OR status='unverified') AND type='{type}'")
+    return result
+
+
+def getUnverifiedBills():
+    result = pullFromDB("SELECT * FROM Payments WHERE status='unverified'")
+    return result
+
+def verifyBill(paymentID):
+    pushToDB(f"UPDATE Payments SET status='paid' WHERE paymentID='{paymentID}'")
+    return

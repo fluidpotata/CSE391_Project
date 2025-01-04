@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from time import strftime
-from admin import pullFromDB, pushToDB
+from database.admin import pullFromDB, pushToDB
 
 def dbConnect():
     return sqlite3.connect('database/main.db')
@@ -142,7 +142,7 @@ def getBills(userID):
 def payBill(tenantid, pid, tid):
     connection = dbConnect()
     cursor = connection.cursor()
-    cursor.execute(f"UPDATE Payments SET status='paid', transactionID='{tid}' WHERE tenantID='{tenantid}' AND paymentID='{pid}'")
+    cursor.execute(f"UPDATE Payments SET status='unverified', transactionID='{tid}' WHERE tenantID='{tenantid}' AND paymentID='{pid}'")
     connection.commit()
     connection.close()
     return
@@ -179,3 +179,9 @@ def getUtilityBillStatus(userID):
     result = cursor.fetchall()[0][0]
     connection.close()
     return result==0
+
+
+def getTenantName(tenantID):
+    result = pullFromDB(f"SELECT name FROM Tenants WHERE tenantID='{tenantID}'")[0][0]
+    return result
+    
